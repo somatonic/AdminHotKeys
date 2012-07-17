@@ -19,7 +19,8 @@
 class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 
 	protected static $defaults = array(
-		'hk_save' => 'ctrl+s'
+		'hk_save' => 'ctrl+s',
+		'hk_addnew' => 'ctrl+n'
 	);
 
 	/**
@@ -32,8 +33,8 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 
 		return array(
 			'title' => 'Hot Keys',
-			'version' => 001,
-			'summary' => 'Adds hot key functionality in ProcessWire backend. Currently supports: Page Save.',
+			'version' => 002,
+			'summary' => 'Adds hot key functionality in ProcessWire backend. Currently supports: Save, Add New. See jQuery hotkeys plugin at for options [Hotkeys Github](https://github.com/jeresig/jquery.hotkeys)',
 			'href' => 'http://processwire.com/talk/topic/1524-admin-hot-keys/',
 			'singular' => true,
 			'autoload' => true
@@ -46,15 +47,12 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 		$config = self::$defaults;
 		foreach($config as $key => $unused) $config[$key] = $this->get($key) == null ? $config[$key] : $this->get($key);
 		$this->config->js($this->className(), $config);
-	}
-
-	public function ready() {
 		// add hook to add scripts
-		$this->addHookBefore('ProcessPageEdit::execute', $this, 'addHotKeys');
+		$this->addHookAfter('Process::execute', $this, 'addHotKeys');
+		$this->addHookAfter('Process::executeEdit', $this, 'addHotKeys');
 	}
 
-
-	public function addHotKeys($event) {
+	public function addHotKeys(HookEvent $event) {
 		$this->config->scripts->add($this->config->urls->AdminHotKeys . "jquery.hotkeys.js");
 		$this->config->scripts->add($this->config->urls->AdminHotKeys . "AdminHotKeys.js");
 	}
@@ -69,9 +67,18 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 		$field->attr('name', 'hk_save');
 		$field->attr('size', 10);
 		$field->attr('value', $data['hk_save']);
-		$field->label = "Save Page";
-		$field->description = "Enter the hot key to save a page. See jQuery hotkeys plugin at [Hotkeys Github](https://github.com/jeresig/jquery.hotkeys)";
+		$field->label = "Save";
+		$field->description = "Enter the hot key to save. Works on all edit screens.";
 		$field->notes = "ctrl+s, meta+s, alt+s, shift+s etc.";
+		$fields->append($field);
+
+		$field = $modules->get("InputfieldText");
+		$field->attr('name', 'hk_addnew');
+		$field->attr('size', 10);
+		$field->attr('value', $data['hk_addnew']);
+		$field->label = "Add New";
+		$field->description = "Enter the hot key add new item (Template, Field, User...).";
+		$field->notes = "ctrl+n, meta+n, alt+n, shift+n etc.";
 		$fields->append($field);
 
 		return $fields;

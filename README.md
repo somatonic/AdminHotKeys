@@ -1,10 +1,11 @@
-# ProcessWire Hot Keys Module v0.0.1
+# ProcessWire Hot Keys Module v0.0.2
 
 This module adds hot key functionality to ProcessWire's backend.
 It uses a jQuery hotkeys plugin from here: [Hotkeys Github](https://github.com/jeresig/jquery.hotkeys)
 
 ### Currently supported actions:
 
-* Page Save : `ctrl+s`
+* Save : `ctrl+s`
+* Add New : `ctrl+n`
 
 It can be configured to your preference in the module settings.
