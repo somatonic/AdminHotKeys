@@ -33,8 +33,8 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 		return array(
 			'title' => 'Hot Keys',
 			'version' => 001,
-			'summary' => 'Add hot key functionality to backend. Default "ctrl-s" to save page. ',
-			'href' => '',
+			'summary' => 'Adds hot key functionality in ProcessWire backend. Currently supports: Page Save.',
+			'href' => 'http://processwire.com/talk/topic/1524-admin-hot-keys/',
 			'singular' => true,
 			'autoload' => true
 			);
