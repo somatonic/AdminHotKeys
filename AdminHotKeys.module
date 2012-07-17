@@ -44,7 +44,7 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 	public function init() {
 		// add js config to admin output
 		$config = self::$defaults;
-		foreach($config as $key => $unused) $config[$key] = $this->get($key);
+		foreach($config as $key => $unused) $config[$key] = $this->get($key) == null ? $config[$key] : $this->get($key);
 		$this->config->js($this->className(), $config);
 	}
 
