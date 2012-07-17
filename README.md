@@ -3,7 +3,7 @@
 This module adds hot key functionality to ProcessWire's backend.
 It uses a jquery hotkeys plugin from here: [Hotkeys Github](https://github.com/jeresig/jquery.hotkeys)
 
-Currently only the following action is supported:
+## Currently supported actions:
 
 	Page Save : ctr+s
 
