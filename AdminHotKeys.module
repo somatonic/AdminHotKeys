@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * ProcessWire HotKey Module
+ *
+ * Add hot keys to PW admin.
+ *
+ * 2012/07/17 by Soma Philipp Urlich
+ *
+ * ProcessWire 2.x
+ * Copyright (C) 2010 by Ryan Cramer
+ * Licensed under GNU/GPL v2, see LICENSE.TXT
+ *
+ * http://www.processwire.com
+ * http://www.ryancramer.com
+ *
+ */
+
+class AdminHotKeys extends WireData implements Module, ConfigurableModule {
+
+	protected static $defaults = array(
+		'hk_save' => 'ctrl+s'
+	);
+
+	/**
+	 * getModuleInfo is a module required by all modules to tell ProcessWire about them
+	 *
+	 * @return array
+	 *
+	 */
+	public static function getModuleInfo() {
+
+		return array(
+			'title' => 'Hot Keys',
+			'version' => 001,
+			'summary' => 'Add hot key functionality to backend. Default "ctrl-s" to save page. ',
+			'href' => '',
+			'singular' => true,
+			'autoload' => true
+			);
+	}
+
+
+	public function init() {
+		// add js config to admin output
+		$config = self::$defaults;
+		foreach($config as $key => $unused) $config[$key] = $this->get($key);
+		$this->config->js($this->className(), $config);
+	}
+
+	public function ready() {
+		// add hook to add scripts
+		$this->addHookBefore('ProcessPageEdit::execute', $this, 'addHotKeys');
+	}
+
+
+	public function addHotKeys($event) {
+		$this->config->scripts->add($this->config->urls->AdminHotKeys . "jquery.hotkeys.js");
+		$this->config->scripts->add($this->config->urls->AdminHotKeys . "AdminHotKeys.js");
+	}
+
+	static public function getModuleConfigInputfields(array $data) {
+		$data = array_merge(self::$defaults, $data);
+
+		$fields = new InputfieldWrapper();
+		$modules = wire("modules");
+
+		$field = $modules->get("InputfieldText");
+		$field->attr('name', 'hk_save');
+		$field->attr('size', 10);
+		$field->attr('value', $data['hk_save']);
+		$field->label = "Save Page";
+		$field->description = "Enter the hot key to save a page. See jQuery hotkeys plugin at [Hotkeys Github](https://github.com/jeresig/jquery.hotkeys)";
+		$field->notes = "ctrl+s, meta+s, alt+s, shift+s etc.";
+		$fields->append($field);
+
+		return $fields;
+	}
+
+}
