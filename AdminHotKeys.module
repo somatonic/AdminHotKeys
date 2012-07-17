@@ -41,7 +41,6 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 			);
 	}
 
-
 	public function init() {
 		// add js config to admin output
 		$config = self::$defaults;
@@ -53,8 +52,10 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 	}
 
 	public function addHotKeys(HookEvent $event) {
-		$this->config->scripts->add($this->config->urls->AdminHotKeys . "jquery.hotkeys.js");
-		$this->config->scripts->add($this->config->urls->AdminHotKeys . "AdminHotKeys.js");
+		$conf = $this->getModuleInfo();
+		$version = (int) $conf['version'];
+		$this->config->scripts->add($this->config->urls->AdminHotKeys . "jquery.hotkeys.js?v={$version}");
+		$this->config->scripts->add($this->config->urls->AdminHotKeys . "AdminHotKeys.js?v={$version}");
 	}
 
 	static public function getModuleConfigInputfields(array $data) {
