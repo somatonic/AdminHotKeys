@@ -1,4 +1,4 @@
-# ProcessWire Hot Keys Module v0.0.2
+# ProcessWire Hot Keys Module v0.0.5
 
 This module adds hot key functionality to ProcessWire's backend.
 It uses a jQuery hotkeys plugin from here: [Hotkeys Github](https://github.com/jeresig/jquery.hotkeys)
@@ -7,5 +7,12 @@ It uses a jQuery hotkeys plugin from here: [Hotkeys Github](https://github.com/j
 
 * Save : `ctrl+s`
 * Add New : `ctrl+n`
+* Open Templates (autocomplete) : `ctrl+shift+t`
+* Open Fields (autocomplete) : `ctrl+shift+f`
+* Goto Pages : `ctrl+shift+p`
+* Goto Setup : `ctrl+shift+s`
+* Goto Modules : `ctrl+shift+m`
+* Goto Access : `ctrl+shift+a`
+
 
 It can be configured to your preference in the module settings.

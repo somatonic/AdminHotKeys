@@ -1,0 +1,24 @@
+
+
+#hk_list {
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	margin: -20px 0 0 -160px;
+	background-color: #fff;
+	width: 320px;
+	padding: 15px;
+	z-index: 9999;
+	box-shadow: 0 0 20px rgba(0,0,0,0.3);
+	border: 1px solid #aaa;
+	text-align: center;
+}
+#hk_list input { width: 200px;}
+
+.ui-autocomplete.ui-menu {
+	box-shadow: 0 0 20px rgba(0,0,0,0.3);
+	/*max-height: 450px!important;*/
+	overflow: auto;
+	overflow-x: hidden;
+
+}
