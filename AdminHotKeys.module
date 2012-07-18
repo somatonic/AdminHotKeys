@@ -53,10 +53,12 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 		foreach($config as $key => $unused) $config[$key] = $this->get($key) == null ? $config[$key] : $this->get($key);
 
 		foreach($this->templates as $tmpl) {
-			$config['hk_pwtemplates'][$tmpl->name] = $tmpl->id;
+			$suffix = ($tmpl->flags & Template::flagSystem) ? '*' : '' ;
+			$config['hk_pwtemplates'][$tmpl->name . $suffix] = $tmpl->id;
 		}
 		foreach($this->fields as $fld) {
-			$config['hk_pwfields'][$fld->name] = $fld->id;
+			$suffix = ($fld->flags & Field::flagSystem) ? '*' : '' ;
+			$config['hk_pwfields'][$fld->name . $suffix] = $fld->id;
 		}
 
 		$this->config->js($this->className(), $config);
