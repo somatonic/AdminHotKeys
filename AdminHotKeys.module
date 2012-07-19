@@ -129,15 +129,15 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 		$field->attr('name', 'hk_openpages');
 		$field->attr('size', 15);
 		$field->attr('value', $data['hk_openpages']);
-		$field->label = "Goto Setup";
-		$field->description = "Enter the hot key to open Pages.";
+		$field->label = "Goto Pages";
+		$field->description = "Enter the hot key to open Pages page.";
 		$fields->append($field);
 
 		$field = $modules->get("InputfieldText");
 		$field->attr('name', 'hk_opensetup');
 		$field->attr('size', 15);
 		$field->attr('value', $data['hk_opensetup']);
-		$field->label = "Goto Pages";
+		$field->label = "Goto Setup";
 		$field->description = "Enter the hot key to open Setup page.";
 		$fields->append($field);
 
