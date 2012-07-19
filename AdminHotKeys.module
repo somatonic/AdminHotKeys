@@ -21,6 +21,7 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 	protected static $defaults = array(
 		'hk_save' => 'ctrl+s',
 		'hk_addnew' => 'ctrl+n',
+		'hk_view' => 'ctrl+v',
 		'hk_openpages' => 'ctrl+shift+p',
 		'hk_opensetup' => 'ctrl+shift+s',
 		'hk_openmodules' => 'ctrl+shift+m',
@@ -89,6 +90,14 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 		$field->label = "Save";
 		$field->description = "Enter the hot key to save. Works on all edit screens.";
 		$field->notes = "ctrl+s, meta+s, alt+s, shift+s etc.";
+		$fields->append($field);
+
+		$field = $modules->get("InputfieldText");
+		$field->attr('name', 'hk_view');
+		$field->attr('size', 15);
+		$field->attr('value', $data['hk_view']);
+		$field->label = "View Page";
+		$field->description = "Enter the hot key to view the page. Works on all pages edit screen.";
 		$fields->append($field);
 
 		$field = $modules->get("InputfieldText");
