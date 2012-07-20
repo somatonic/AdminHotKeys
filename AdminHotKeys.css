@@ -1,24 +1,24 @@
 
 
 #hk_list {
-	position: absolute;
-	top: 30%;
+	position: fixed;
+	top: 20%;
 	left: 50%;
-	margin: -20px 0 0 -160px;
-	background-color: #fff;
+	margin: 0px 0 0 -175px;
 	width: 320px;
 	padding: 15px;
 	z-index: 9999;
 	box-shadow: 0 0 20px rgba(0,0,0,0.3);
-	border: 1px solid #aaa;
 	text-align: center;
 }
-#hk_list input { width: 200px;}
+#hk_list input { width: 180px; float: left;}
+#hk_list label { width: 100px; margin: 0 5px 0 0; float: left; text-align: right; line-height: 1.6em;}
+#hk_list label a { text-decoration: underline;}
+#hk_list select {  float: left; margin: 5px 0 0 105px; }
 
 .ui-autocomplete.ui-menu {
 	box-shadow: 0 0 20px rgba(0,0,0,0.3);
-	/*max-height: 450px!important;*/
-	overflow: auto;
+	max-height: 450px;
+	overflow-y: auto;
 	overflow-x: hidden;
-
 }

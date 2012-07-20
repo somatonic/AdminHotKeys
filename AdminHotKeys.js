@@ -1,8 +1,7 @@
 
+var hkconf = config.AdminHotKeys;
 
 $(function(){
-
-	var hkconf = config.AdminHotKeys;
 
 	// save hot key for all edit screens
 	if($('button[id*="submit"]').length > 0){
@@ -43,19 +42,28 @@ $(function(){
 	// add hot key for template,field autocomplete edit
 	function openHKTemplateList(){
 		$('#hk_list').remove();
-		prepareHKContainer( hkconf.hk_pwtemplates, 'Edit <a href="'+config.urls.admin+'setup/template/">Template</a>:', 'setup/template/edit' );
-		$('#hk_list').fadeIn().find('input:first').focus();
+		prepareHKContainer( hkconf.hk_pwtemplates, 'Edit <a href="'+config.urls.admin+'setup/template/">Template</a>:', 'setup/template/edit', 'template' );
+		$('#hk_list').fadeIn( 200, function(){ $(this).find('input:first').focus()} );
 	};
+
 	function openHKFieldList(){
 		$('#hk_list').remove();
-		prepareHKContainer( hkconf.hk_pwfields, 'Edit <a href="'+config.urls.admin+'setup/field/">Field</a>:', 'setup/field/edit' );
-		$('#hk_list').fadeIn().find('input:first').focus();
+		prepareHKContainer( hkconf.hk_pwfields, 'Edit <a href="'+config.urls.admin+'setup/field/">Field</a>:', 'setup/field/edit', 'field' );
+		$('#hk_list').fadeIn( 200, function(){ $(this).find('input:first').focus()});
 	};
+
+	function openHKPageList(){
+		$('#hk_list').remove();
+		prepareHKContainer( function(request, callback){ searchPages(request.term, callback)} , 'Edit <a href="'+config.urls.admin+'page/">Page</a>:', 'page/edit/' , 'page');
+		$('#hk_list').fadeIn( 200, function(){ $(this).find('input:first').focus()});
+	};
+
 
 	$(document).bind('keydown', hkconf.hk_templateedit , openHKTemplateList);
 	$(document).bind('keydown', hkconf.hk_fieldedit , openHKFieldList);
+	$(document).bind('keydown', hkconf.hk_pageedit , openHKPageList);
 
-	function closeHKList(){ $('#hk_list').fadeOut(function(){ $(this).remove(); }); };
+	function closeHKList(){ $('#hk_list').fadeOut( 200, function(){ $(this).remove(); }); };
 	$(document).bind('keydown', "esc", closeHKList);
 	$("body").live('click', function(e){
 		var node = $(e.target);
@@ -73,16 +81,34 @@ $(function(){
  * label to show string|html
  * url for the edit page
  */
-var prepareHKContainer = function(tags, label, url) {
+var prepareHKContainer = function(tags, label, url, type) {
 	var $items = $('<div id="hk_list" class="hk_list ui-widget ui-widget-content"><label>' + label + ' </label><input id="hk_items"></div>');
-	var hk_taglist = [];
-	for(var tname in tags){
-		// create static array obects for autocomplete search
-		 hk_taglist.push({label: tname, value: tags[tname]});
+
+	// if using type page, append template select
+	if(type == 'page') {
+		$select = $('<select id="hk_templateselect"></select>');
+		$select.append('<option value=""> </option>');
+		for(name in hkconf.hk_pwtemplates) {
+			$select.append('<option value="'+ hkconf.hk_pwtemplates[name] +'">'+ name +'</option>');
+		}
+		$items.append($select);
 	}
+
+	if( typeof tags == "function" ) {
+		// source can also be a callback that handles the remote source
+		hk_source = tags;
+	} else {
+		var hk_source = [];
+		for(var tname in tags){
+			// create static array obects for autocomplete search
+			hk_source.push({label: tname, value: tags[tname]});
+		}
+	}
+
 	$('body').append($items.hide());
 	$('#hk_items').autocomplete({
-		source: hk_taglist,
+		// the source can also be a callback
+		source: hk_source,
 		minLength : 0,
 		position: { my : "center top", at: "center bottom" },
 		focus: function(event, ui) { return false; },
@@ -94,4 +120,32 @@ var prepareHKContainer = function(tags, label, url) {
 	// set max height based on screen size
 	var wheight = $(window).height()/100 * 73;
 	$('body').find('.ui-menu').css({'maxHeight': wheight + "px"});
+};
+
+// helper callback by autcomplete to search using PW search (ajax)
+// result will be a json object if called using aja
+var searchPages = function (term, callback){
+	$.ajax({
+		url : config.urls.admin + 'page/search/',
+		data: {
+			'q': term,
+			'operator': 7, // using %= to find pages
+			'field': hkconf.hk_pagefields != '' ? hkconf.hk_pagefields : 'title body',
+			'template': $('#hk_templateselect').val()
+		},
+		dataType: 'json',
+		success : function(data){
+			if(data.total == 0) {
+				callback();
+			} else {
+				// save each result in a array with objects
+				var results = [];
+				for(res in data.matches) {
+					results.push({label: data.matches[res].title, value: data.matches[res].id});
+				}$
+				// send back results to autocomplete
+				callback(results);
+			}
+		}
+	});
 };

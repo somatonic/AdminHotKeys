@@ -22,6 +22,8 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 		'hk_save' => 'ctrl+s',
 		'hk_addnew' => 'ctrl+n',
 		'hk_view' => 'ctrl+v',
+		'hk_pageedit' => 'alt+q',
+		'hk_pagefields' => 'title body',
 		'hk_openpages' => 'ctrl+shift+p',
 		'hk_opensetup' => 'ctrl+shift+s',
 		'hk_openmodules' => 'ctrl+shift+m',
@@ -40,8 +42,8 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 
 		return array(
 			'title' => 'Hot Keys',
-			'version' => 006,
-			'summary' => 'Adds hot key functionality in ProcessWire backend. Currently supports: Save, Add New, view Page, open Template, open Field, goto Pages/Setup/Modules/Access. See jQuery hotkeys plugin hot key options [Hotkeys Github](https://github.com/jeresig/jquery.hotkeys)',
+			'version' => 007,
+			'summary' => 'Adds hot key functionality in ProcessWire backend. For defining hot keys see jQuery hotkeys plugin hot key options https://github.com/jeresig/jquery.hotkeys',
 			'href' => 'http://processwire.com/talk/topic/1524-admin-hot-keys/',
 			'singular' => true,
 			'autoload' => true
@@ -70,6 +72,8 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 	}
 
 	public function addHotKeys(HookEvent $event) {
+		// if on login no need to go further
+		if( $this->process == 'ProcessLogin') return false;
 		$conf = $this->getModuleInfo();
 		$version = (int) $conf['version'];
 		$this->config->scripts->add($this->config->urls->AdminHotKeys . "jquery.hotkeys.js?v={$version}");
@@ -89,7 +93,6 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 		$field->attr('value', $data['hk_save']);
 		$field->label = "Save";
 		$field->description = "Enter the hot key to save. Works on all edit screens.";
-		$field->notes = "ctrl+s, meta+s, alt+s, shift+s etc.";
 		$fields->append($field);
 
 		$field = $modules->get("InputfieldText");
@@ -105,24 +108,39 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 		$field->attr('size', 15);
 		$field->attr('value', $data['hk_addnew']);
 		$field->label = "Add New";
-		$field->description = "Enter the hot key add new item (Template, Field, User...).";
-		$field->notes = "ctrl+n, meta+n, alt+n, shift+n etc.";
+		$field->description = "Enter the hot key add new item (Template, Field, User, Child page...).";
+		$fields->append($field);
+
+		$field = $modules->get("InputfieldText");
+		$field->attr('name', 'hk_pageedit');
+		$field->attr('size', 15);
+		$field->attr('value', $data['hk_pageedit']);
+		$field->label = "Open Pages search";
+		$field->description = "Enter the hot key to open autocomplete for a quick page search.";
+		$fields->append($field);
+
+		$field = $modules->get("InputfieldText");
+		$field->attr('name', 'hk_pagefields');
+		$field->attr('size', 15);
+		$field->attr('value', $data['hk_pagefields']);
+		$field->label = "Search fields for page search (above)";
+		$field->description = "Enter the field(s) to search. Default 'title body'.";
 		$fields->append($field);
 
 		$field = $modules->get("InputfieldText");
 		$field->attr('name', 'hk_templateedit');
 		$field->attr('size', 15);
 		$field->attr('value', $data['hk_templateedit']);
-		$field->label = "Open template list to edit";
-		$field->description = "Enter the hot key to open autocomplete templates.";
+		$field->label = "Open Template search";
+		$field->description = "Enter the hot key to open autocomplete for templates search.";
 		$fields->append($field);
 
 		$field = $modules->get("InputfieldText");
 		$field->attr('name', 'hk_fieldedit');
 		$field->attr('size', 15);
 		$field->attr('value', $data['hk_fieldedit']);
-		$field->label = "Open field list to edit";
-		$field->description = "Enter the hot key to open autocomplete fields.";
+		$field->label = "Open Field search";
+		$field->description = "Enter the hot key to open autocomplete for fields search.";
 		$fields->append($field);
 
 		$field = $modules->get("InputfieldText");

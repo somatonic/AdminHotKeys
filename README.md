@@ -1,4 +1,4 @@
-# ProcessWire Hot Keys Module v0.0.6
+# ProcessWire Hot Keys Module v0.0.7
 
 This module adds hot key functionality to ProcessWire's backend. The keys can be configured to your preference in the module settings. [ProcessWire Forum thread](http://processwire.com/talk/topic/1524-admin-hot-keys/)
 
@@ -9,8 +9,9 @@ It uses a jQuery hotkeys plugin from here: [Hotkeys Github](https://github.com/j
 * Save : `ctrl+s`
 * Add New : `ctrl+n`
 * View Page : `ctrl+v`
-* Open Templates (autocomplete) : `ctrl+shift+t`
-* Open Fields (autocomplete) : `ctrl+shift+f`
+* Open Page search : `alt+q` (search fields can be configured)
+* Open Templates search : `ctrl+shift+t`
+* Open Fields search : `ctrl+shift+f`
 * Goto Pages : `ctrl+shift+p`
 * Goto Setup : `ctrl+shift+s`
 * Goto Modules : `ctrl+shift+m`
