@@ -42,7 +42,7 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 
 		return array(
 			'title' => 'Hot Keys',
-			'version' => 007,
+			'version' => 008,
 			'summary' => 'Adds hot key functionality in ProcessWire backend. For defining hot keys see jQuery hotkeys plugin hot key options https://github.com/jeresig/jquery.hotkeys',
 			'href' => 'http://processwire.com/talk/topic/1524-admin-hot-keys/',
 			'singular' => true,
@@ -67,13 +67,15 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 		$this->config->js($this->className(), $config);
 
 		// add hook to add scripts
-		$this->addHookAfter('Process::execute', $this, 'addHotKeys');
-		$this->addHookAfter('Process::executeEdit', $this, 'addHotKeys');
+		if(strpos($_SERVER["REQUEST_URI"], $this->config->urls->admin) !== false){
+			$this->addHookAfter('Process::execute', $this, 'addHotKeys');
+			$this->addHookAfter('Process::executeEdit', $this, 'addHotKeys');
+		}
 	}
 
 	public function addHotKeys(HookEvent $event) {
 		// if on login no need to go further
-		if( $this->process == 'ProcessLogin') return false;
+		if($this->process == 'ProcessLogin') return;
 		$conf = $this->getModuleInfo();
 		$version = (int) $conf['version'];
 		$this->config->scripts->add($this->config->urls->AdminHotKeys . "jquery.hotkeys.js?v={$version}");
