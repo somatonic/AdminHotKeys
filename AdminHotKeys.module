@@ -42,7 +42,7 @@ class AdminHotKeys extends WireData implements Module, ConfigurableModule {
 
 		return array(
 			'title' => 'Hot Keys',
-			'version' => 008,
+			'version' => 8,
 			'summary' => 'Adds hot key functionality in ProcessWire backend. For defining hot keys see jQuery hotkeys plugin hot key options https://github.com/jeresig/jquery.hotkeys',
 			'href' => 'http://processwire.com/talk/topic/1524-admin-hot-keys/',
 			'singular' => true,
