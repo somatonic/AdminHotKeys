@@ -1,11 +1,10 @@
-
 var hkconf = config.AdminHotKeys;
 
 $(function(){
 
 	// save hot key for all edit screens
 	if($('button[id*="submit"]').length > 0){
-		function savePage(e){ $('button[id*="submit"]').trigger('click'); };
+		function savePage(e){ $('button[id*="submit"]').trigger('click');  e.preventDefault(); };
 		$(document).bind('keydown', hkconf.hk_save, savePage);
 	}
 	// add hot key for "add new"
