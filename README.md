@@ -23,5 +23,8 @@ __Tip__: If you open up templates or fields autocomplete search `ctrl+shift+f|t`
 
 Change Log:
 
+0.0.9
+- Dont display system save dialog on pressing CTRL-S @jmar
+
 0.0.8
 - added check to add hooks only in backend
